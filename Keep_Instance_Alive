@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# put your instance id here
+instance="dev######"
+# make sure your password doesn't have shell operators in it
+credentials="admin:password"
+
+while true; do
+    entropy=`rand`
+    outdata="{\"short_description\":\"Automated incident $entropy\"}"
+    curl --user $credentials \
+        --header "Content-Type: application/json" \
+        --header "Accept: application/json" \
+        --request POST \
+        --data "$outdata" \
+        "https://$instance.service-now.com/api/now/table/incident"
+    echo "\n\n"
+    sleeptime="`rand -M 5`m"
+    echo "created incident, waiting $sleeptime"
+    sleep $sleeptime
+done
